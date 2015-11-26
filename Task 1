@@ -1,0 +1,103 @@
+#Imports the required modules
+import time
+import csv
+
+
+Letters=[]
+for i in range(97,123):
+    Letters.append(chr(i))
+
+#The algoritihm to determine if it is a standard number plate or not
+def Standard(R):
+    #Crears a list for diceting the string
+    Rs=[]
+    #Dicets the string
+    for i in R:
+        Rs.append(i)
+    #Checks the lenght as a first check
+    if len(R) != 8:
+        return False
+    else:
+        where=0
+        while a<=7:
+            #Checks to see if the places that should be letter are letters
+            if where==0 or where==1 or where==5 or where==6 or where==7:
+                if Rs[a].lower() not in Letters:
+                    return False
+            #Numbers
+            elif where==2 or where==3:
+                if ord(Rs[where]) not in range(48,57):
+                    return False
+            #Space
+            elif where==4:
+                if Rs[where] != " ":
+                    return False
+            #Incrimations
+            a+=1
+    #If it passes all of the tests, then it returns true
+    return True
+
+
+#The distance between the two points in miles
+Distance=2
+#The speed limit
+SL=60
+#A list of all of the registatiosn, will be sotored in a csv table
+Regs=[]
+#The time that the car equally along the table entered
+StartTime=[]
+#The time the car then left
+EndTime=[]
+#Wheather the car is entering or leaving
+Where="n/a"
+#List of speeding cars
+Speeding=[]
+#List of non-standard numberplates
+NSN=[]
+
+#Creates the loop which the algorithm will run
+while True:
+    #Resets varibles
+    Reg=""
+    speeding=False
+    Time=0
+    Speed=0
+    Done=False
+    #Makes sure that the user only inputs vaild respones in
+    while True:
+        Where = input("Where is the car? s/e ")
+        if Where.lower() != "s" and Where.lower() != "e":
+            print("Not a vaild location")
+        else: break
+    #Checks the users resposnse and sends it down the approprate path
+    if Where.lower() == "s":
+        #Gets the registation of the veichle and adds it to a database
+        Reg=input("Registation ")
+        Regs.append(Reg)
+        #Checks to see if it is a standard number plate
+        if not Standard(Reg):NSN.append(Reg)
+        #Gets the time the veihcls crossed the station
+        StartTime.append(int(time.time()))
+    elif Where.lower() == "e":
+        Reg=input("Registation ")
+        if Reg not in Regs:
+            print("This car has not been recored\nPlease try again")
+        else:
+            EndTime = int(time.time())
+            Car=0
+            for car in Regs:
+                if Reg==car:
+                    Time=(EndTime-StartTime[Car])/3600
+                    Speed=Distance/Time
+                else:
+                    Car+=1
+            if Speed>SL:
+                Speeding.append(Reg)
+    while True:
+        Done=input("Done? y/n ")
+        if Done.lower() != "y" and Done.lower() != "n":
+            print("Not an acceptable answer")
+        else: break
+    if Done.lower() == "y":break
+print("These are the registation of all of the speeding cars " + str(Speeding))
+print("This is a list of all of the non-standard number plates " + str(NSN))

@@ -1,0 +1,28 @@
+def Standard(R):
+    #Crears a list for diceting the string
+    Rs=[]
+    #Dicets the string
+    for i in R:
+        Rs.append(i)
+    #Checks the lenght as a first check
+    if len(R) != 8:
+        return False
+    else:
+        a=0
+        while a<=7:
+            #Checks to see if the places that should be letter are letters
+            if a==0 or a==1 or a==5 or a==6 or a==7:
+                if Rs[a].lower() not in Letters:
+                    return False
+            #Numbers
+            elif a==2 or a==3:
+                if ord(Rs[a]) not in range(48,57):
+                    return False
+            #Space
+            elif a==4:
+                if Rs[a] != " ":
+                    return False
+            #Incrimations
+            a+=1
+    #If it passes all of the tests, then it returns true
+    return True

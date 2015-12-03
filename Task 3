@@ -1,0 +1,12 @@
+import csv
+import copy
+
+db = []
+with open('cars.csv', 'r') as csvf:
+    reader = csv.DictReader(csvf)
+    db = list(reader)
+reg = input("What REG?: ")
+for veh in db:
+    if veh['Reg'] == reg:
+        for k, v in veh.items():
+            print(k + ": " + v)
